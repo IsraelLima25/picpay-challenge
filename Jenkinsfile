@@ -19,7 +19,7 @@ pipeline{
 
         stage('Unit Tests') {
             steps{
-               sh 'mvn test -Dmaven.test.skip=false'
+               sh 'mvn -Dmaven.test.skip=false test'
             }
         }
     }
