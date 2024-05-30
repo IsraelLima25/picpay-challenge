@@ -1,6 +1,6 @@
 package br.com.ilima.picpay_challenge.application.usecase;
 
-import br.com.ilima.picpay_challenge.application.domain.Common;
+import br.com.ilima.picpay_challenge.application.domain.TransferUser;
 import br.com.ilima.picpay_challenge.application.domain.User;
 import br.com.ilima.picpay_challenge.port.input.TransferInputPort;
 import br.com.ilima.picpay_challenge.port.output.TransferOutputPort;
@@ -21,8 +21,9 @@ public class TransferUseCase implements TransferInputPort {
         this.transferOutputPort = transferOutputPort;
     }
 
+
     @Override
-    public void execute(Common userDebitValueTransfer, User userCreditValueTransfer, BigDecimal valueTransfer) {
+    public void execute(TransferUser userCreditValueTransfer, BigDecimal valueTransfer) {
 
     }
 }
