@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 public class Common extends User implements TransferUser {
 
+
     public Common(String name, Cpf cpf, Email email, String password, Account account) {
         super(name, cpf, email, password, account);
     }

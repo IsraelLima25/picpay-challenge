@@ -2,13 +2,15 @@ package br.com.ilima.picpay_challenge.application.exception;
 
 public class CpfInvalidException extends RuntimeException {
 
-    private String messageDefault;
+    private static final long serialVersionUID = 1L;
 
-    public CpfInvalidException(String messageDefault) {
-        super(messageDefault);
+    private String message;
+
+    public CpfInvalidException(String message) {
+        this.message = message;
     }
 
-    public String getMessageDefault() {
-        return messageDefault;
+    public String getMessage() {
+        return message;
     }
 }

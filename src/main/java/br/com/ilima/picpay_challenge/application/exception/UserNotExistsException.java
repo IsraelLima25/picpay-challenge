@@ -1,12 +1,12 @@
 package br.com.ilima.picpay_challenge.application.exception;
 
-public class BalanceInsufficientException extends RuntimeException {
+public class UserNotExistsException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
     private String message;
 
-    public BalanceInsufficientException(String message) {
+    public UserNotExistsException(String message) {
         this.message = message;
     }
 

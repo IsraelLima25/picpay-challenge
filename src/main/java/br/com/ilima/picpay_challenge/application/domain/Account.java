@@ -13,6 +13,10 @@ public class Account {
         this.balance = BigDecimal.ZERO;
     }
 
+    public Account(BigDecimal balance) {
+        this.balance = balance;
+    }
+
     public boolean isBalance(BigDecimal requestedValue){
         if(this.balance.compareTo(requestedValue) < 0){
             return false;
