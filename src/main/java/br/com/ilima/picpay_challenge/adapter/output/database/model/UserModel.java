@@ -59,4 +59,9 @@ public class UserModel {
     public String getUserType() {
         return userType;
     }
+
+    public void addAccount(AccountModel accountModel){
+        this.accountModel = accountModel;
+    }
+
 }
