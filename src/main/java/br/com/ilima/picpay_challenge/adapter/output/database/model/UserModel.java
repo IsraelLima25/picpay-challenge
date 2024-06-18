@@ -36,6 +36,14 @@ public class UserModel {
         this.password = password;
     }
 
+    public UserModel(String name, String cpf, String email, String password, String userType) {
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+    }
+
     public String getName() {
         return name;
     }

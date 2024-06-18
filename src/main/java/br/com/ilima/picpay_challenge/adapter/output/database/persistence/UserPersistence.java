@@ -28,7 +28,7 @@ public class UserPersistence implements UserOutputPort {
         Optional<UserModel> optionalUser = userRepository.findById(id);
 
         if(!optionalUser.isPresent()){
-            throw new RegystryNotFoundException("User not found database");
+            throw new RegystryNotFoundException("id_user","User not found database");
         }
 
         return optionalUser.get();

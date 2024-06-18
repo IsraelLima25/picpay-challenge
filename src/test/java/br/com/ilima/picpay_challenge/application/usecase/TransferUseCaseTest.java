@@ -2,8 +2,14 @@ package br.com.ilima.picpay_challenge.application.usecase;
 
 import br.com.ilima.picpay_challenge.adapter.output.database.model.AccountModel;
 import br.com.ilima.picpay_challenge.adapter.output.database.model.UserModel;
+import br.com.ilima.picpay_challenge.application.domain.TypeUser;
 import br.com.ilima.picpay_challenge.application.dto.TransferDomainDTO;
+import br.com.ilima.picpay_challenge.application.exception.TransferInvalidException;
 import br.com.ilima.picpay_challenge.application.exception.UserNotExistsException;
+import br.com.ilima.picpay_challenge.port.input.ExistsUserInputPort;
+import br.com.ilima.picpay_challenge.port.input.FindUserByIdInputPort;
+import br.com.ilima.picpay_challenge.port.input.FindUserPayerByIdInputPort;
+import br.com.ilima.picpay_challenge.port.output.TransferOutputPort;
 import br.com.ilima.picpay_challenge.port.output.UserOutputPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,25 +29,22 @@ class TransferUseCaseTest {
     TransferUseCase transferUseCase;
 
     @Mock
-    UserOutputPort userOutputPort;
+    ExistsUserInputPort existsUserInputPort;
 
-    @Test
-    void givenTransferUserCreditOrUserDebitNotExistsWhenExecuteUseCaseThenThrowUserNotExistsException(){
+    @Mock
+    FindUserPayerByIdInputPort findUserPayerByIdInputPort;
 
-        TransferDomainDTO dto = new TransferDomainDTO(new BigDecimal("100.00"), 1L, 1L);
+    @Mock
+    FindUserByIdInputPort findUserByIdInputPort;
 
-        when(userOutputPort.countUserToTransferById(1L, 1L)).thenReturn(1L);
-
-        assertThrows(UserNotExistsException.class, () -> {
-            transferUseCase.execute(dto);
-        });
-    }
+    @Mock
+    TransferOutputPort transferOutputPort;
 
     @Test
     void givenTransferUserCreditOrUserDebitValidWhenExecuteUseCaseThenProcessTransfer(){
 
         TransferDomainDTO dto = new TransferDomainDTO(new BigDecimal("100.00"), 1L, 2L);
-        when(userOutputPort.countUserToTransferById(1L, 2L)).thenReturn(2L);
+        when(existsUserInputPort.execute(1L, 2L)).thenReturn(true);
 
         UserModel userPayer = new UserModel("Payer user", "036.659.147-67", "payer@gmail.com", "1236");
         userPayer.addAccount(new AccountModel(userPayer));
@@ -51,12 +54,13 @@ class TransferUseCaseTest {
         userPayee.addAccount(new AccountModel(userPayee));
         userPayee.getAccount().updateBalance(new BigDecimal("300.00"));
 
-        when(userOutputPort.findById(1L)).thenReturn(userPayer);
-        when(userOutputPort.findById(2L)).thenReturn(userPayee);
+        when(findUserPayerByIdInputPort.execute(1L)).thenReturn(userPayer);
+        when(findUserByIdInputPort.execute(2L)).thenReturn(userPayee);
 
         transferUseCase.execute(dto);
 
         assertEquals(new BigDecimal("200.00"), userPayer.getAccount().getBalance());
         assertEquals(new BigDecimal("400.00"), userPayee.getAccount().getBalance());
     }
+
 }

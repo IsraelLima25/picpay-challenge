@@ -25,7 +25,7 @@ public class TransferController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void transfer(@Valid @RequestBody TransferInputDTO transferInputDTO) {
         LOGGER.info("Start request transfer to id "+transferInputDTO.payer()+" from id " + transferInputDTO.payee());
         transferInputPort.execute(transferInputDTO.toTransferDomainDTO());

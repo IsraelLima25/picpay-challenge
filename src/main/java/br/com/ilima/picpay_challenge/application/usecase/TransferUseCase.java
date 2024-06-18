@@ -5,10 +5,11 @@ import br.com.ilima.picpay_challenge.application.domain.TransferUser;
 import br.com.ilima.picpay_challenge.application.domain.User;
 import br.com.ilima.picpay_challenge.application.domain.factory.UserTypeFactory;
 import br.com.ilima.picpay_challenge.application.dto.TransferDomainDTO;
-import br.com.ilima.picpay_challenge.application.exception.UserNotExistsException;
+import br.com.ilima.picpay_challenge.port.input.ExistsUserInputPort;
+import br.com.ilima.picpay_challenge.port.input.FindUserByIdInputPort;
+import br.com.ilima.picpay_challenge.port.input.FindUserPayerByIdInputPort;
 import br.com.ilima.picpay_challenge.port.input.TransferInputPort;
 import br.com.ilima.picpay_challenge.port.output.TransferOutputPort;
-import br.com.ilima.picpay_challenge.port.output.UserOutputPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,28 +19,25 @@ public class TransferUseCase implements TransferInputPort {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransferUseCase.class);
 
-    private final UserOutputPort userOutputPort;
+    private final TransferOutputPort transferOutputPort;
+    private final ExistsUserInputPort existsUserInputPort;
+    private final FindUserPayerByIdInputPort findUserPayerByIdInputPort;
+    private final FindUserByIdInputPort findUserByIdInputPort;
 
-    public TransferUseCase(UserOutputPort userOutputPort) {
-        this.userOutputPort = userOutputPort;
+    public TransferUseCase(ExistsUserInputPort existsUserInputPort, FindUserPayerByIdInputPort findUserPayerByIdInputPort,
+            FindUserByIdInputPort findUserByIdInputPort, TransferOutputPort transferOutputPort) {
+        this.existsUserInputPort = existsUserInputPort;
+        this.findUserPayerByIdInputPort = findUserPayerByIdInputPort;
+        this.findUserByIdInputPort = findUserByIdInputPort;
+        this.transferOutputPort = transferOutputPort;
     }
 
     @Override
     public void execute(TransferDomainDTO userCreditValueTransfer) {
 
-        LOGGER.info("Checking user id "+ userCreditValueTransfer.payer() +" and "+ userCreditValueTransfer.payee() +" exists");
-        if(!existsUsers(userCreditValueTransfer.payer(), userCreditValueTransfer.payee())){
-            LOGGER.error("User id "+userCreditValueTransfer.payer()+ " and "+ userCreditValueTransfer.payee()+" not exists");
-            throw new UserNotExistsException("User not found");
-        }
-        LOGGER.info("User id "+userCreditValueTransfer.payer()+" and user id "+userCreditValueTransfer.payee()+ "exists");
-
-        LOGGER.info("Find user payer by id "+userCreditValueTransfer.payer()+" in Database");
-        UserModel userPayerEntity = userOutputPort.findById(userCreditValueTransfer.payer());
-        LOGGER.info("Find user payee by id "+userCreditValueTransfer.payee()+" in Database");
-        UserModel userPayeeEntity = userOutputPort.findById(userCreditValueTransfer.payee());
-
-        LOGGER.info("User payer id "+userCreditValueTransfer.payer()+" and user payee id "+userCreditValueTransfer.payee()+" located");
+        existsUserInputPort.execute(userCreditValueTransfer.payer(), userCreditValueTransfer.payee());
+        UserModel userPayerEntity = findUserPayerByIdInputPort.execute(userCreditValueTransfer.payer());
+        UserModel userPayeeEntity = findUserByIdInputPort.execute(userCreditValueTransfer.payee());
 
         TransferUser userTransferDomain = UserTypeFactory.createUserPayer(userPayerEntity);
         User userPayeeDomain = UserTypeFactory.createUserPayee(userPayeeEntity);
@@ -55,9 +53,8 @@ public class TransferUseCase implements TransferInputPort {
         LOGGER.info("Update balance payer id " +userCreditValueTransfer.payer());
         userPayerEntity.getAccount().updateBalance(userPayerDomain.getAccount().getBalance());
 
+        LOGGER.info("Save transfer to user payer "+userCreditValueTransfer.payer()+" from user payee id "+userCreditValueTransfer.payee());
+        transferOutputPort.save(userPayerEntity, userPayeeEntity, userCreditValueTransfer.value());
     }
 
-    private boolean existsUsers(Long idPayer, Long idPayee){
-       return userOutputPort.countUserToTransferById(idPayer, idPayee) == 2;
-    }
 }

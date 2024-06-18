@@ -28,7 +28,7 @@ public class Account {
         if(!Objects.equals(value, new BigDecimal("0.00")) && !Objects.equals(value, BigDecimal.ZERO)){
             this.balance = this.balance.add(value);
         }else{
-            throw new BalanceInsufficientException("Value zero insufficient to credit");
+            throw new BalanceInsufficientException("value_credit", "Value zero insufficient to credit");
         }
     }
 
@@ -36,7 +36,7 @@ public class Account {
         if(isBalance(value)){
             this.balance = this.balance.subtract(value);
         }else{
-            throw new BalanceInsufficientException("Balance insufficient to debit");
+            throw new BalanceInsufficientException("value_debit","Balance insufficient to debit");
         }
     }
 

@@ -17,7 +17,7 @@ public class Common extends User implements TransferUser {
             this.getAccount().debit(valueDeposited);
             userDeposited.getAccount().credit(valueDeposited);
         }else{
-            throw new BalanceInsufficientException("Balance insufficient to transfer");
+            throw new BalanceInsufficientException("value_deposited","Balance insufficient to transfer");
         }
     }
 }

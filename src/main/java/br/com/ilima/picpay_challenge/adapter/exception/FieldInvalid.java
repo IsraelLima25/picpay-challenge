@@ -1,13 +1,11 @@
-package br.com.ilima.picpay_challenge.application.exception;
+package br.com.ilima.picpay_challenge.adapter.exception;
 
-public class UserNotExistsException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
+public class FieldInvalid {
 
     private String field;
     private String message;
 
-    public UserNotExistsException(String field, String message) {
+    public FieldInvalid(String field, String message) {
         this.field = field;
         this.message = message;
     }
@@ -15,6 +13,7 @@ public class UserNotExistsException extends RuntimeException {
     public String getField() {
         return field;
     }
+
     public String getMessage() {
         return message;
     }
