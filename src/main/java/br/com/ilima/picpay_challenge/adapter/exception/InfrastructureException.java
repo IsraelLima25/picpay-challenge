@@ -1,12 +1,11 @@
-package br.com.ilima.picpay_challenge.application.exception;
+package br.com.ilima.picpay_challenge.adapter.exception;
 
-public class CpfInvalidException extends RuntimeException {
-
+public class InfrastructureException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private String message;
 
-    public CpfInvalidException(String message) {
+    public InfrastructureException(String message) {
         this.message = message;
     }
 

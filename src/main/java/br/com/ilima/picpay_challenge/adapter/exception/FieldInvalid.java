@@ -1,13 +1,15 @@
-package br.com.ilima.picpay_challenge.application.exception;
+package br.com.ilima.picpay_challenge.adapter.exception;
 
-public class BalanceInsufficientException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
+public class FieldInvalid {
 
     private String field;
     private String message;
 
-    public BalanceInsufficientException(String field, String message) {
+    public FieldInvalid(String message) {
+        this.message = message;
+    }
+
+    public FieldInvalid(String field, String message) {
         this.field = field;
         this.message = message;
     }

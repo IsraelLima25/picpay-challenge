@@ -2,13 +2,15 @@ package br.com.ilima.picpay_challenge.application.exception;
 
 public class EmailInvalidException extends RuntimeException{
 
-    private String messageDefault;
+    private static final long serialVersionUID = 1L;
 
-    public EmailInvalidException(String messageDefault) {
-        super(messageDefault);
+    private String message;
+
+    public EmailInvalidException(String message) {
+        this.message = message;
     }
 
-    public String getMessageDefault() {
-        return messageDefault;
+    public String getMessage() {
+        return message;
     }
 }

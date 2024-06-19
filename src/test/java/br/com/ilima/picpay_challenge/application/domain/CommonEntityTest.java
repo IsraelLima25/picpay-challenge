@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CommonTest {
+class CommonEntityTest {
 
 
     @Test
@@ -20,7 +20,7 @@ class CommonTest {
         Common userCommonCredit = new Common("User Common Credit", new Cpf("120.752.030-67"),
                 new Email("captcha1@captcha.com"), "4321", new Account());
 
-        userCommonDebit.transferTo(userCommonCredit, new BigDecimal("400.00"));
+        userCommonDebit.sendTransfer(userCommonCredit, new BigDecimal("400.00"));
 
         assertEquals(new BigDecimal("400.00"), userCommonCredit.getAccount().getBalance());
         assertEquals(new BigDecimal("200.00"), userCommonDebit.getAccount().getBalance());
@@ -36,7 +36,7 @@ class CommonTest {
         Shopkeeper userShopkeeperCredit = new Shopkeeper("User Shopkeeper Credit", new Cpf("120.752.030-67"),
                 new Email("captcha1@captcha.com"), "4321", new Account());
 
-        userCommonDebit.transferTo(userShopkeeperCredit, new BigDecimal("400.00"));
+        userCommonDebit.sendTransfer(userShopkeeperCredit, new BigDecimal("400.00"));
 
         assertEquals(new BigDecimal("400.00"), userShopkeeperCredit.getAccount().getBalance());
         assertEquals(new BigDecimal("200.00"), userCommonDebit.getAccount().getBalance());
@@ -53,7 +53,7 @@ class CommonTest {
                 new Email("captcha1@captcha.com"), "4321", new Account());
 
         assertThrows(BalanceInsufficientException.class,() -> {
-            userCommonDebit.transferTo(userShopkeeperCredit, new BigDecimal("700.00"));
+            userCommonDebit.sendTransfer(userShopkeeperCredit, new BigDecimal("700.00"));
        });
     }
 

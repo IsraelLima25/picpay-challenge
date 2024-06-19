@@ -1,0 +1,1 @@
+CREATE INDEX cpf_idx ON tbl_user (cpf) USING BTREE;
