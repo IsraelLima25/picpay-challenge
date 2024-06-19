@@ -4,7 +4,7 @@ public enum TypeUser {
 
     COMMON("COMMON"), SHOPKEEPER("SHOPKEEPER");
 
-    private String description;
+    private final String description;
 
     private TypeUser(String description) {
         this.description = description;

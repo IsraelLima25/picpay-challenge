@@ -1,6 +1,7 @@
 package br.com.ilima.picpay_challenge.adapter.input.api.controller;
 
 import br.com.ilima.picpay_challenge.adapter.input.api.dto.TransferInputDTO;
+import br.com.ilima.picpay_challenge.adapter.output.api.authorize.Authorize;
 import br.com.ilima.picpay_challenge.port.input.TransferInputPort;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +39,9 @@ class TransferControllerTest {
 
     @MockBean
     TransferInputPort transferInputPort;
+
+    @MockBean
+    Authorize authorize;
 
     @BeforeAll
     static void setupBeforeClass() {

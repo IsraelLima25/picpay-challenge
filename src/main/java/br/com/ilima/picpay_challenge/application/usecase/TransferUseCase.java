@@ -13,6 +13,7 @@ import br.com.ilima.picpay_challenge.port.output.TransferOutputPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TransferUseCase implements TransferInputPort {
@@ -32,6 +33,7 @@ public class TransferUseCase implements TransferInputPort {
         this.transferOutputPort = transferOutputPort;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void execute(TransferDomainDTO userCreditValueTransfer) {
 

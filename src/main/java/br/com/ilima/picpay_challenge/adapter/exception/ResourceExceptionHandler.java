@@ -54,6 +54,13 @@ public class ResourceExceptionHandler {
         return fieldInvalid;
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({InfrastructureException.class})
+    public FieldInvalid handlerInfrastructureException(InfrastructureException exception) {
+        FieldInvalid fieldInvalid = new FieldInvalid(exception.getMessage());
+        return fieldInvalid;
+    }
+
     private List<FieldInvalid> extractErrors(List<FieldError> fieldErrors){
         List<FieldInvalid> camposInvalido = new ArrayList<>();
         fieldErrors.forEach(error -> {
